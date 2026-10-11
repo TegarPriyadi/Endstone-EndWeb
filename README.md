@@ -1,5 +1,5 @@
 <h1>
-  <img src="https://files.catbox.moe/9b3o33.jpg" width="60" align="center">
+  <img src="https://github.com/user-attachments/assets/bdbf7d16-2625-4fc6-ab89-ea885b8f00fd" width="60" align="center">
   Endstone Puglin - EndWeb [v2]
 </h1>
 
