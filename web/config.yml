@@ -1,0 +1,14 @@
+setting:
+  host: 0.0.0.0
+  port: 19132
+  #Replace it with the port you're using
+
+  # Message storage during server restart
+  save_messages: false
+
+  # Enable/disable automatic deletion
+  auto_delete_messages: true
+  message_retention_days: 2
+  # Example: 1 = delete messages 1 day old or older
+
+  #by-zorner..

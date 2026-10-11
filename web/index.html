@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>EndWeb Dashboard</title>
+    <link rel="icon" type="image/png" href="https://mcheads.ru/heads/medium/back/odgd.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- ========== CSS ========== -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ========== SIDEBAR ========== -->
+<aside class="sidebar">
+    <div class="logo">
+        <img src="https://wiki.techreborn.ovh/img/techreborn/endstone_dust.png" alt="Logo" class="logo-img" />
+        <div class="logo-text">
+            <span class="t1">EndWeb [v2]</span>
+            <span class="t2">Bedrock Edition</span>
+        </div>
+    </div>
+
+    <div class="nav-section-title">Main Menu</div>
+
+    <div class="nav-item active" data-page="home">
+        <i class="fa-solid fa-house icon"></i>
+        <span class="label">Home</span>
+    </div>
+
+    <div class="nav-item" data-page="status">
+        <i class="fa-solid fa-chart-simple icon"></i>
+        <span class="label">Status</span>
+        <span class="badge-count" id="nav-status-count">0</span>
+    </div>
+
+    <div class="nav-item" data-page="message">
+        <i class="fa-solid fa-comments icon"></i>
+        <span class="label">Message</span>
+        <span class="badge-count" id="nav-msg-count">0</span>
+    </div>
+
+    <div class="nav-item" data-page="document">
+        <i class="fa-solid fa-file-lines icon"></i>
+        <span class="label">Document</span>
+    </div>
+
+    <div class="nav-item" data-page="structure">
+        <i class="fa-solid fa-diagram-project"></i>
+        <span class="label">Example</span>
+    </div>
+
+    <div class="sidebar-footer">
+        <span class="dot-live"></span>
+        <span>Auto-refresh enabled</span>
+    </div>
+</aside>
+
+<!-- ========== MAIN ========== -->
+<main class="main-content">
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-title" id="topbar-title">Home</div>
+            <div class="topbar-subtitle" id="topbar-subtitle">Server overview</div>
+        </div>
+        <div class="topbar-right">
+            <div class="pill live hide-mobile" id="topbar-status">
+                <span class="dot-live"></span>
+                <strong>Online</strong>
+            </div>
+            <div class="pill">
+                <strong id="topbar-players">0/0</strong> Player
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== HOME PAGE ===== -->
+    <section class="page active" id="page-home">
+        <div class="page-header">
+            <h1>Dashboard Home</h1>
+            <p>Overview of server status, map, and player information</p>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="top">
+                    <div class="label">Server Status</div>
+                    <div class="icon-wrap"><i class="fa-solid fa-server"></i></div>
+                </div>
+                <div class="value" id="home-online">—</div>
+                <div class="sub" id="home-motd">Loading...</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="top">
+                    <div class="label">Max Player</div>
+                    <div class="icon-wrap"><i class="fa-solid fa-users"></i></div>
+                </div>
+                <div class="value" id="home-max-players">—</div>
+                <div class="sub">Slots available</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="top">
+                    <div class="label">Active Player</div>
+                    <div class="icon-wrap"><i class="fa-solid fa-user-check"></i></div>
+                </div>
+                <div class="value" id="home-active-players">—</div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" id="home-progress" style="width:0%"></div>
+                </div>
+                <div class="sub" id="home-player-names" style="margin-top:6px;">—</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="top">
+                    <div class="label">Port</div>
+                    <div class="icon-wrap"><i class="fa-solid fa-plug"></i></div>
+                </div>
+                <div class="value" id="home-port">—</div>
+                <div class="sub">Bedrock Protocol</div>
+            </div>
+        </div>
+
+        <div class="map-section">
+            <div class="map-top">
+                <div class="motd">
+                    <div class="motd-icon"><i class="fa-solid fa-map"></i></div>
+                    <div>
+                        <div class="motd-text" id="map-motd">—</div>
+                        <div class="motd-sub">MC-Seed-View</div>
+                    </div>
+                </div>
+                <div class="seed-chip">
+                    <span class="lbl">Seed</span>
+                    <span class="val" id="map-seed">—</span>
+                </div>
+            </div>
+
+            <div class="map-frame">
+                <iframe id="map-iframe" src="" loading="lazy" allowfullscreen></iframe>
+            </div>
+
+            <div class="map-bottom">
+                <div class="info-cell">
+                    <div class="lbl">Map Name</div>
+                    <div class="val" id="map-level-name">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="lbl">Server Version</div>
+                    <div class="val accent" id="map-version">—</div>
+                </div>
+                <div class="info-cell">
+                    <div class="lbl">Protocol</div>
+                    <div class="val" id="map-protocol">—</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STATUS PAGE ===== -->
+    <section class="page" id="page-status">
+        <div class="page-header">
+            <h1>Player Status</h1>
+            <p>Visualization of active player slots on the server</p>
+        </div>
+
+        <div class="status-bar">
+            <div class="left">
+                <div class="map-icon"><i class="fa-solid fa-earth-asia"></i></div>
+                <div>
+                    <div class="map-title" id="status-map-name">—</div>
+                    <div class="map-sub" id="status-map-sub">Loading information...</div>
+                </div>
+            </div>
+            <div class="player-count-box">
+                <span class="num" id="status-online-num">0</span>
+                <span class="divider">/</span>
+                <span class="max" id="status-max-num">0</span>
+            </div>
+        </div>
+
+        <div class="grid-legend">
+            <div class="legend-item">
+                <span class="legend-dot filled"></span>
+                <span>Player Online</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot empty"></span>
+                <span>Empty Slots</span>
+            </div>
+        </div>
+
+        <div class="player-grid" id="player-grid"></div>
+    </section>
+
+    <!-- ===== MESSAGE PAGE ===== -->
+    <section class="page" id="page-message">
+        <div class="page-header">
+            <h1>Server Messages</h1>
+            <p>Chat messages from players, newest at the bottom — scroll up to read older messages.</p>
+        </div>
+
+        <div class="chat-wrapper">
+            <div class="chat-header">
+                <div class="hash"><i class="fa-solid fa-hashtag"></i></div>
+                <div>
+                    <div class="ch-title">chat-server</div>
+                    <div class="ch-sub">Real-time messages</div>
+                </div>
+                <div class="count-chip" id="msg-count-chip">0 messages</div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="loading-state">
+                    <div class="spinner-lg"></div>
+                    <div>Loading messages...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== DOCUMENT PAGE ===== -->
+    <section class="page" id="page-document">
+        <div class="page-header">
+            <h1>API Documentation</h1>
+            <p>List of available API endpoints and their functions</p>
+        </div>
+
+        <div class="doc-grid">
+
+            <!-- API 1 -->
+            <div class="doc-card">
+                <div class="doc-head">
+                    <div class="num">01</div>
+                    <div class="title">Server Status</div>
+                    <div class="method">GET</div>
+                </div>
+                <div class="doc-body">
+                    <div class="endpoint-list">
+                        <div class="endpoint">/api/status</div>
+                    </div>
+                    <div class="desc">
+                        Retrieves server status information in real-time. The response contains
+                        <strong>online</strong>, <strong>motd</strong>, <strong>level_name</strong>,
+                        <strong>id_seed</strong>, <strong>port</strong>, <strong>players</strong>,
+                        <strong>max_players</strong>, <strong>minecraft_version</strong>,
+                        <strong>protocol_version</strong>, and array <strong>player_names</strong>.
+                    </div>
+                    <div class="code-block">
+                        <div class="cb-header">
+                            <div class="cb-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+                            <span>Response JSON</span>
+                        </div>
+                        <pre>{
+  "online": true,
+  "motd": "Endstone Server",
+  "level_name": "Bedrock level",
+  "id_seed": xxxxxxxxxxxxxxxxxxxx,
+  "port": 19132,
+  "players": 1,
+  "max_players": 10,
+  "minecraft_version": "1.26.52",
+  "protocol_version": 2193,
+  "player_names": ["STEVE"]
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API 2 -->
+            <div class="doc-card">
+                <div class="doc-head">
+                    <div class="num">02</div>
+                    <div class="title">Player Details</div>
+                    <div class="method">GET</div>
+                </div>
+                <div class="doc-body">
+                    <div class="endpoint-list">
+                        <div class="endpoint">/api/list?player=&lt;nama&gt;</div>
+                    </div>
+                    <div class="desc">
+                        Retrieves the full details of a player. The <code>player</code> parameter is required.
+                        The data includes <strong>name</strong>, <strong>uuid</strong>, <strong>profile</strong>
+                        (skin_id & url avatar), <strong>status</strong>, <strong>health</strong>,
+                        <strong>max_health</strong>, <strong>coordinates</strong> (x, y, z, dimension),
+                        <strong>deaths</strong>, <strong>mob_kills</strong>, <strong>first_join</strong>,
+                        <strong>play_time</strong>, <strong>play_time_formatted</strong>, and
+                        <strong>last_played</strong>.
+                    </div>
+                    <div class="code-block">
+                        <div class="cb-header">
+                            <div class="cb-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+                            <span>Response JSON</span>
+                        </div>
+                        <pre>{
+  "name": "STEVE",
+  "uuid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx",
+  "profile": {
+    "skin_id": "persona-xxxxxxxxxxxxxxxx-x",
+    "url": "/api/avatar?player=STEVE"
+  },
+  "status": "online",
+  "health": 20,
+  "max_health": 20,
+  "coordinates": {
+    "x": 123.5,
+    "y": 71.0625,
+    "z": 36.5,
+    "dimension": "Overworld"
+  },
+  "deaths": 0,
+  "mob_kills": 0,
+  "first_join": "2026-10-10T10:42:09Z",
+  "play_time": 68,
+  "play_time_formatted": "1m 8s",
+  "last_played": "2026-10-10T10:42:09Z"
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API 3 -->
+            <div class="doc-card">
+                <div class="doc-head">
+                    <div class="num">03</div>
+                    <div class="title">Chat Message</div>
+                    <div class="method">GET</div>
+                </div>
+                <div class="doc-body">
+                    <div class="endpoint-list">
+                        <div class="endpoint">/api/massege</div>
+                        <div class="endpoint alt">/api/massege?limit=100</div>
+                        <div class="endpoint alt">/api/massege?after_id=500&limit=500</div>
+                    </div>
+                    <div class="desc">
+                        Retrieves a list of chat messages from the server. Optional parameters:
+                        <code>limit</code> (number of messages) and <code>after_id</code>
+                        (retrieve messages after a specific ID). The response contains
+                        <strong>count</strong>, <strong>last_id</strong>, <strong>has_more</strong>,
+                        dan array <strong>messages</strong> where each item contains
+                        <strong>id</strong>, <strong>name</strong>, <strong>timestamp</strong>,
+                        <strong>profile_url</strong>, <strong>dimension</strong>, and
+                        <strong>message</strong>.
+                    </div>
+                    <div class="code-block">
+                        <div class="cb-header">
+                            <div class="cb-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+                            <span>Response JSON</span>
+                        </div>
+                        <pre>{
+  "count": 1,
+  "last_id": 1,
+  "has_more": false,
+  "messages": [
+    {
+      "id": 1,
+      "name": "STEVE",
+      "timestamp": "2026-10-10 12:22:12",
+      "profile_url": "/api/avatar?player=STEVE",
+      "dimension": "Overworld",
+      "message": "hello stone"
+    }
+  ]
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API 4 -->
+            <div class="doc-card">
+                <div class="doc-head">
+                    <div class="num">04</div>
+                    <div class="title">Player Avatar</div>
+                    <div class="method">GET</div>
+                </div>
+                <div class="doc-body">
+                    <div class="endpoint-list">
+                        <div class="endpoint">/api/avatar?player=&lt;nama&gt;</div>
+                    </div>
+                    <div class="desc">
+                        Retrieves a player's avatar (profile photo) in PNG format.
+                        The <code>player</code> parameter is required and must specify
+                        the player's name. This endpoint is used by the <strong>Status</strong>
+                        and <strong>Message</strong> pages to display the player's profile icon.
+                        The image is square (1:1 aspect ratio) and is cacheable by browsers.
+                    </div>
+                    <div class="code-block">
+                        <div class="cb-header">
+                            <div class="cb-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+                            <span>Response Image</span>
+                        </div>
+                        <div style="padding: 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                            <img
+                                    src="https://i.pinimg.com/1200x/a0/ee/92/a0ee92666bfb87aed854e2017a1c451a.jpg"
+                                    alt="Player Avatar"
+                                    style="width: 100px; height: 100px; object-fit: cover; border-radius: 12px; border: 2px solid var(--border); image-rendering: pixelated;"
+                            />
+                            <div style="flex: 1; min-width: 200px;">
+                                <div style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 8px; line-height: 1.6;">
+                                    <strong style="color: var(--text);">Response:</strong> Binary image (image/png)<br/>
+                                    <strong style="color: var(--text);">Size:</strong> 1:1 (square)<br/>
+                                    <strong style="color: var(--text);">Content-Type:</strong> <code>image/png</code>
+                                </div>
+                                <div class="endpoint" style="color: var(--accent); font-size: 0.7rem;">
+                                    GET /api/avatar?player=&lt;nama&gt;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== STRUCTURE PAGE ===== -->
+    <section class="page" id="page-structure">
+        <div class="page-header">
+            <h1>Flexibility in File and Folder Structure</h1>
+            <p>Guide to organizing website project files and folders</p>
+        </div>
+
+        <div class="structure-content">
+            <p>
+                Users and developers are given complete freedom to create, organize,
+                and manage files and subfolders according to their project needs, without having to follow
+                the default directory structure defined by the system. Developers
+                are not limited to just a few specific files or folders, but can create
+                as many HTML, CSS, JavaScript, and other supporting files as
+                needed.
+            </p>
+
+            <p>
+                Developers can also group files based on their functions and purposes to make
+                the project structure neater, more organized, and easier to develop. For example,
+                developers can create several HTML pages for different features, such as
+                the <strong>Home</strong>, <strong>Status</strong>, <strong>Message</strong>,
+                and <strong>Document</strong> pages. Each page can use its own CSS and
+                JavaScript files, so the code for each feature can be managed
+                separately without having to combine all the code into a single file.
+            </p>
+
+            <h2><i class="fa-solid fa-diagram-project"></i> Example of a Folder Structure</h2>
+            <p style="margin-bottom: 14px;">
+                Here is an example of a folder structure you can use:
+            </p>
+
+            <div class="code-block" style="margin-bottom: 24px;">
+                <div class="cb-header">
+                    <div class="cb-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+                    <i class="fa-solid fa-folder-tree"></i>
+                    <span>Folder Structure</span>
+                </div>
+                <pre>website/
+├── index.html              # Required homepage
+├── home.html               # Home page
+├── status.html             # Status page
+├── message.html            # Message page
+├── document.html           # Document page
+│
+├── css/
+│   ├── style.css           # CSS Mian
+│   ├── home.css            # CSS Home page
+│   ├── status.css          # CSS Status page
+│   ├── message.css         # CSS Message page
+│   └── document.css        # CSS Document page
+│
+├── js/
+│   ├── script.js           # JavaScript main
+│   ├── home.js             # JavaScript Home page
+│   ├── status.js           # JavaScript Status page
+│   ├── message.js          # JavaScript Message page
+│   └── document.js         # JavaScript Document page
+│
+├── assets/
+│   ├── images/             # Images and icons
+│   ├── fonts/              # Font file
+│   └── icons/              # Additional icons
+│
+└── pages/
+    ├── settings.html       # Additional Settings Page
+    └── profile.html        # Additional profile page</pre>
+            </div>
+
+            <p>
+                The structure above is merely an example and <strong>is not a required directory structure</strong>.
+                Developers are free to rename folders, add subfolders, move files,
+                or create other structures as needed for the project. For example, CSS and
+                JavaScript files can be placed in the same folder as the HTML files, or each
+                page can have its own folder containing HTML, CSS, and JavaScript files.
+            </p>
+
+            <div class="info-box">
+                <div class="info-box-icon">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <div class="info-box-content">
+                    <h3>The index.html file is required</h3>
+                    <p>
+                        Although the file and folder structure can be organized freely,
+                        <strong>the index.html file remains mandatory</strong> and cannot be replaced
+                        as the main file. The system uses this file as the entry point
+                        when users access the main website page. Therefore,
+                        the <code>index.html</code> file must remain in the website’s root directory
+                        and must not be deleted or renamed.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="main-footer">
+      <span class="footer-text">
+        2026 - BY
+        <a href="https://zorner.men" target="_blank" rel="noopener noreferrer" class="zorner">ZORNER</a>
+      </span>
+    </footer>
+
+</main>
+
+</main>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script src="js/script.js"></script>
+</body>
+</html>
